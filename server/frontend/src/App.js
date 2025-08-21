@@ -1,4 +1,4 @@
-/* jshint esversion: 8 */
+/* jshint esversion: 11, module: true, browser: true */
 
 import LoginPanel from "./components/Login/Login"
 import Register from "./components/Register/Register"
@@ -9,6 +9,7 @@ import Dealers from "./components/Dealers/Dealers"
 import Dealer from "./components/Dealers/Dealer"
 import PostReview from "./components/Dealers/PostReview"
 
+/* jshint ignore:start */
 function App() {
   return (
     <Routes>
@@ -21,3 +22,4 @@ function App() {
   );
 }
 export default App;
+/* jshint ignore:end */
