@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_GET, require_POST
 
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -39,10 +38,7 @@ def logout_request(request):
     return JsonResponse(data)
 
 
-# @csrf_exempt
 def registration(request):
-    context = {}
-
     data = json.loads(request.body)
     username = data["userName"]
     password = data["password"]
@@ -50,7 +46,6 @@ def registration(request):
     last_name = data["lastName"]
     email = data["email"]
     username_exist = False
-    email_exist = False
 
     try:
         User.objects.get(username=username)
@@ -70,6 +65,7 @@ def registration(request):
         data = {"userName": username, "status": "Authenticated"}
 
         return JsonResponse(data)
+
 
 def get_cars(request):
     count = CarMake.objects.filter().count()
@@ -108,16 +104,22 @@ def get_dealer_details(request, dealer_id):
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
+
 def add_review(request):
     if request.user.is_anonymous == False:
         data = json.loads(request.body)
         try:
             response = post_review(data)
             return JsonResponse({"status": 200})
-        except:
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+        except Exception:
+            return JsonResponse(
+                {"status": 401,
+                "message": "Error in posting review"
+                }
+            )
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
+
 
 def get_dealer_reviews(request, dealer_id):
     if dealer_id:
