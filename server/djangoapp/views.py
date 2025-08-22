@@ -28,7 +28,7 @@ def login_user(request):
     if user is not None:
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
-    
+
     return JsonResponse(data)
 
 
@@ -82,7 +82,7 @@ def get_cars(request):
                 "CarMake": car_model.car_make.name
             }
         )
-    
+
     return JsonResponse({"CarModels": cars})
 
 
@@ -92,7 +92,7 @@ def get_dealerships(request, state="All"):
     else:
         endpoint = "/fetchDealers/"+state
     dealerships = get_request(endpoint)
-    
+
     return JsonResponse({"status": 200, "dealers": dealerships})
 
 
@@ -109,12 +109,12 @@ def add_review(request):
     if request.user.is_anonymous is False:
         data = json.loads(request.body)
         try:
-            
+
             response = post_review(data)
             return JsonResponse({"status": 200, "resp": response})
         except Exception:
             return JsonResponse(
-                {  
+                {
                     "status": 401,
                     "message": "Error in posting review"
                 }
